@@ -3,8 +3,7 @@ import pdb
 import traceback
 import xml.sax.xmlreader
 import xml.sax.saxutils
-import lxml.etree
-import lxml.builder
+from lxml import etree as et
 
 def parse_files(filename):
     try:
@@ -56,22 +55,18 @@ def to_xml(file, data):
 '''
 
 def to_xml2(file, data):
-    E = lxml.builder.ElementMaker()
-    ROOT = E.root
-    DOC = E.doc
-    FIELD1 = E.field1
-    FIELD2 = E.field2
+    root = et.Element('Synonyms')
+    
+    for k in data.keys():
+        for word in data[k]:
+            synonym = et.SubElement(root, 'Synonym', term=word)
+            variant = et.SubElement(synonym, 'Variant')
+            variant.text = k
+    file.write('<?xml version=\'1.0\' encoding=\'UTF-8\'?')
+    file.write(et.tostring(root, pretty_print=True))
 
-    the_doc = ROOT(
-        the_doc = ROOT(
-            DOC(
-                FIELD1('some value1', name='blah'),
-                FIELD2('some value2', name='asdfasd'),
-            )
-        )
-    )
-    print(lxml.etree.tostring(the_doc, pretty_print=True))
 
 input = parse_files('test.txt')
 keywords_file = open('keywords.xml', 'wb')
 to_xml2(keywords_file, input)
+keywords_file.close()
