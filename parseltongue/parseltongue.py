@@ -1,15 +1,15 @@
 import re
 import pdb
-import status_messages as stat
 import traceback
+import xml.sax.xmlreader
+import xml.sax.saxutils
+import lxml.etree
+import lxml.builder
 
 def parse_files(filename):
     try:
         file = open(filename, 'r', encoding='utf-8')
         
-        stat.print_success('File ' + filename + ' found!')
-        print('Building vocabulary list...')
-
         keywords_raw = file.read().strip()
         
         file.close()
@@ -21,7 +21,6 @@ def parse_files(filename):
         for g in groups:
             group_parse = g.split('\n')
             result = re.sub(r'^[[]|[]]$', '', group_parse[0])
-            print(result)
             keywords[result] = group_parse[1:]
             # print(group_name)
 
@@ -38,7 +37,41 @@ def parse_files(filename):
 
     return keywords
 
-def to_xml(data):
-    pass
+'''
+def to_xml(file, data):
+    attr0 = xml.sax.xmlreader.AttributesImpl({})
+    x =  xml.sax.saxutils.XMLGenerator(file)
+    x.startDocument()
+    x.startElement('Synonyms', attr0)
+    
+    for k in data.keys():
+        for word in data[k]:
+            
+            x.startElement('Variant', attr0)
+            x.characters(k)
+            x.endElement(word)
 
-parse_files('test.txt')
+    x.endElement('Synonyms')
+    x.endDocument()
+'''
+
+def to_xml2(file, data):
+    E = lxml.builder.ElementMaker()
+    ROOT = E.root
+    DOC = E.doc
+    FIELD1 = E.field1
+    FIELD2 = E.field2
+
+    the_doc = ROOT(
+        the_doc = ROOT(
+            DOC(
+                FIELD1('some value1', name='blah'),
+                FIELD2('some value2', name='asdfasd'),
+            )
+        )
+    )
+    print(lxml.etree.tostring(the_doc, pretty_print=True))
+
+input = parse_files('test.txt')
+keywords_file = open('keywords.xml', 'wb')
+to_xml2(keywords_file, input)
