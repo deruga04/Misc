@@ -63,7 +63,7 @@ def to_xml2(file, data):
             synonym = et.SubElement(root, 'Synonym', term=word)
             variant = et.SubElement(synonym, 'Variant')
             variant.text = k
-    file.write('<?xml version=\'1.0\' encoding=\'UTF-8\'?')
+    file.write(b'<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n')
     file.write(et.tostring(root, pretty_print=True))
 
 if not len(sys.argv) == 2:
