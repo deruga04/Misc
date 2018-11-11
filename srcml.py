@@ -1,3 +1,15 @@
+
+# Description that can be used on a readme or something of the sort:
+# This script is used to turn a srcML-generated format into a Tuple Attribute format to be compared
+# with the two other methods of dependency extraction.
+
+# This script does one thing::
+# 
+# Take this:
+#     1 hbase-2.1.0\hbase-zookeeper\src\test\java\org\apache\hadoop\hbase\zookeeper\TestInstancePending.java org.apache.hadoop.hbase.HBaseClassTestRule
+# And turn it into something like this:
+# cLinks hbase-zookeeper/src/test/java/org/apache/hadoop/hbase/zookeeper/TestInstancePending.java hbase-common/src/test/java/org/apache/hadoop/hbase/HBaseClassTestRule.java
+
 import re
 import os
 
