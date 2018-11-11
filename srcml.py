@@ -14,7 +14,7 @@ def find(name, path):
             return os.path.join(root, name)
 
 def get_hbase_dir(pkg):
-    if 'org.apache.hadoop.hbase.' in pkg:
+    if 'org.apache.hadoop.hbase' in pkg:
         # print(pkg)
         pkg_split = pkg.split('.')
 
@@ -22,35 +22,30 @@ def get_hbase_dir(pkg):
         # print(f'Finding {filename}')
 
         result = find(filename, 'hbase-2.1.0')
+        if result == None:
+            result = 'nope111'
     else:
-        result = pkg
+        result = 'nope111'
 
     return result
 
+# Hello, TA. I wanted to take this time to wish you a great day. Also inform you that f1 is the XML format and out is the output of the Tuple Attributes.
+f1 = open('newconcat', 'r', encoding='utf-8')
 
-
-f1 = open('text.txt', 'r', encoding='utf-8')
-f2 = open('text2.txt', 'r', encoding='utf-8')
-
-out = open('srcml.con.ta', 'a', encoding='utf-8')
+out = open('srcml7.ta', 'a', encoding='utf-8')
 
 if sum(1 for line in open('text.txt')) == sum(1 for line in open('text2.txt')):
-    print('same')
+    # print('same')
 
-    f1_raw = re.split(r'\n', f1.read())
-    f2_raw = re.split(r'\n', f2.read())
+    f1_lines = f1.read().split('\n')
 
-    instance = set(f1_raw)
-
-    for line in instance:
-        out.write(f'$INSTANCE {line} clinks\r\n')
-    
-
-    # print(get_hbase_dir(f2_raw[0]))
-
-    for i in range(0, len(f1_raw) - 1):
-        out.write(f'clinks {f1_raw[i]} {get_hbase_dir(f2_raw[i])}\r\n')
+    for i in f1_lines:
+        a = i.split(' ')
+        if len(a) == 2:
+            shit = get_hbase_dir(a[1])
+            if not shit == 'nope111':
+                out.write(f'cLinks {a[0]} {shit}\r\n')
+        
 
     f1.close()
-    f2.close()
     out.close()
