@@ -26,5 +26,5 @@ def remove(s, a):
             index = i
     return s[0:i] + s[i + 1:len(s) + 1]
     
-s = [4, 7, 11, 9, 45]
-print(f(76, s))
+s = [1, 2, 3, 4]
+print(f(20, s))
