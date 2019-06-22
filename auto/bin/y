@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+import pyperclip
+import webbrowser
+import sys
+
+try:
+    query = '+'.join(sys.argv[1:])
+    webbrowser.open('https://www.youtube.com/results?search_query=' + query)
+except:
+    print('Please enter a search query')
+    print('Example: python3 youtube.py sanctuary joji')
